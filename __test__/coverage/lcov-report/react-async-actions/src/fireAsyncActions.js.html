@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Code coverage report for react-async-actions/src/fireAsyncActions.js</title>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="..\..\prettify.css" />
+    <link rel="stylesheet" href="..\..\base.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style type='text/css'>
+        .coverage-summary .sorter {
+            background-image: url(..\..\sort-arrow-sprite.png);
+        }
+    </style>
+</head>
+<body>
+<div class='wrapper'>
+  <div class='pad1'>
+    <h1>
+      <a href="..\..\index.html">All files</a> / <a href="index.html">react-async-actions/src</a> fireAsyncActions.js
+    </h1>
+    <div class='clearfix'>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">83.33% </span>
+        <span class="quiet">Statements</span>
+        <span class='fraction'>20/24</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">57.14% </span>
+        <span class="quiet">Branches</span>
+        <span class='fraction'>4/7</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">70% </span>
+        <span class="quiet">Functions</span>
+        <span class='fraction'>7/10</span>
+      </div>
+      <div class='fl pad1y space-right2'>
+        <span class="strong">85.71% </span>
+        <span class="quiet">Lines</span>
+        <span class='fraction'>18/21</span>
+      </div>
+    </div>
+  </div>
+  <div class='status-line high'></div>
+<pre><table class="coverage">
+<tr><td class="line-count quiet">1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54
+55
+56
+57
+58
+59
+60
+61</td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import React from 'react';
+import { renderToStaticMarkup } from 'react-dom/server';
+&nbsp;
+export default (element, options) =&gt; {
+  const deps = [];
+  const defaultOptions = {
+    recursive: false
+  };
+  const { recursive } = { ...defaultOptions, ...options };
+&nbsp;
+  class AsyncProvider extends React.Component {
+    static propTypes = {
+      children: React.PropTypes.node
+    };
+    static childContextTypes = {
+      addDep: React.PropTypes.func
+    };
+&nbsp;
+    addDep({ promise, factoryRef }) {
+      const promisesResolved = deps
+        .map(<span class="fstat-no" title="function not covered" >p </span>=&gt; <span class="cstat-no" title="statement not covered" >p.factoryRef)</span>
+        .find(<span class="fstat-no" title="function not covered" >re</span>f =&gt; <span class="cstat-no" title="statement not covered" >ref === factoryRef)</span>;
+&nbsp;
+      <span class="missing-if-branch" title="else path not taken" >E</span>if (!promisesResolved) {
+        deps.push({ promise, factoryRef });
+      }
+    }
+&nbsp;
+    getChildContext() {
+      return { addDep: p =&gt; this.addDep(p) };
+    }
+&nbsp;
+    render() {
+      return this.props.children;
+    }
+  }
+&nbsp;
+  const elem = (
+    &lt;AsyncProvider&gt;
+      {element}
+    &lt;/AsyncProvider&gt;
+  );
+&nbsp;
+  const renderPass = (prevPromisesCount = 0) =&gt; {
+    renderToStaticMarkup(elem);
+    const currPromisesCount = deps.length;
+    const promise = Promise.all(deps.map(p =&gt; p.promise));
+&nbsp;
+    console.log(currPromisesCount, prevPromisesCount);
+&nbsp;
+    <span class="missing-if-branch" title="if path not taken" >I</span>if (recursive &amp;&amp; (<span class="branch-1 cbranch-no" title="branch not covered" >currPromisesCount &gt; prevPromisesCount)</span>) {
+<span class="cstat-no" title="statement not covered" >      return promise.then(<span class="fstat-no" title="function not covered" >()</span> =&gt; <span class="cstat-no" title="statement not covered" >renderPass(currPromisesCount))</span>;</span>
+    } else {
+      console.log('Returning');
+      return promise;
+    }
+  };
+&nbsp;
+  return renderPass();
+};
+&nbsp;</pre></td></tr>
+</table></pre>
+<div class='push'></div><!-- for sticky footer -->
+</div><!-- /wrapper -->
+<div class='footer quiet pad2 space-top1 center small'>
+  Code coverage
+  generated by <a href="http://istanbul-js.org/" target="_blank">istanbul</a> at Sun Sep 25 2016 23:21:06 GMT+0100 (GMT Daylight Time)
+</div>
+</div>
+<script src="..\..\prettify.js"></script>
+<script>
+window.onload = function () {
+        if (typeof prettyPrint === 'function') {
+            prettyPrint();
+        }
+};
+</script>
+<script src="..\..\sorter.js"></script>
+</body>
+</html>

@@ -23,15 +23,19 @@
     "url": "git+https://github.com/alisd23/react-async-actions.git"
   },
   "keywords": [
-    "React",
-    "ReactDOM",
-    "Server",
-    "Isomorphic",
-    "Render",
-    "Rendering",
-    "Actions",
-    "Async",
-    "Asynchronous"
+    "react",
+    "react-dom",
+    "server",
+    "isomorphic",
+    "universal",
+    "render",
+    "rendering",
+    "async",
+    "asynchronous",
+    "actions",
+    "state",
+    "redux",
+    "mobx"
   ],
   "author": "Ali Sheehan-Dare - @im_alisd",
   "license": "MIT",

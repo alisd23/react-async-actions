@@ -1,6 +1,6 @@
 {
   "name": "react-async-actions",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A simple way to handle asynchronous dependencies in React components in apps which use a global state container (e.g. Redux/Mobx/Flux), on client and server.",
   "main": "dist/react-async-actions.js",
   "scripts": {

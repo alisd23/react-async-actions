@@ -12,13 +12,7 @@
   },
   "jest": {
     "collectCoverage": true,
-    "coveragePathIgnorePatterns": [
-      "<rootDir>/__test__"
-    ],
-    "coverageDirectory": "./__test__/coverage",
-    "testPathDirs": [
-      "__test__"
-    ]
+    "coverageDirectory": "./__test__/coverage"
   },
   "repository": {
     "type": "git",

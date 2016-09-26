@@ -17,7 +17,6 @@ const asyncAction = (func) =>
 
 const createComponent = (actionsToFire) => {
   const Component = () => <div />;
-    console.log('CREATE');
   return asyncActions(actionsToFire)(Component);
 };
 

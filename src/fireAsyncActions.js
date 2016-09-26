@@ -46,12 +46,9 @@ export default (element, options) => {
     const currPromisesCount = deps.length;
     const promise = Promise.all(deps.map(p => p.promise));
 
-    console.log(currPromisesCount, prevPromisesCount);
-
     if (recursive && (currPromisesCount > prevPromisesCount)) {
       return promise.then(() => renderPass(currPromisesCount));
     } else {
-      console.log('Returning');
       return promise;
     }
   };

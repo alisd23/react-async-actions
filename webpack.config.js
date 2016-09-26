@@ -11,7 +11,7 @@ const plugins = [
     'process.env.NODE_ENV': JSON.stringify(env)
   }),
   new webpack.optimize.DedupePlugin(),
-  new webpack.optimize.OccurenceOrderPlugin()
+  new webpack.optimize.OccurrenceOrderPlugin()
 ];
 
 if (env === 'production') {
@@ -70,7 +70,7 @@ module.exports = {
     ]
   },
   resolve: {
-    extensions: ['', '.js']
+    extensions: ['.js']
   },
   plugins: plugins
 };

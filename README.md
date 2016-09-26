@@ -1,15 +1,16 @@
 # react-async-actions
 
-A simple way to handle asynchronous dependencies in React components in apps which use a global state container (e.g. Redux/Mobx/Flux), on client and server.
+A simple way to handle asynchronous action dependencies in React components, in apps which use a global state container (e.g. Redux/Mobx/Flux), on **client** and **server**.
 
-This library attempts to be as non-obtrusive as possible, providing a simple helper function for server-rendering, and a decorator to use on components which depend on *actions* which return promise (if asynchronous).
+This library attempts to be as non-obtrusive as possible, providing a simple helper function for server-rendering, to allow the server to wait for all async actions to resolve, before calling `renderToString`, and a decorator to use on components which depend on *actions*.
 
 ## Can I use this library?
 
 You might want to use this library if your app:
-1. renders React on the server
-2. has components with async data dependencies *(e.g. component 'A' depends on some data from an API call before rendering content)*.
-3. uses some global state container (Redux, Mobx, Flux) - i.e. your application data's source of truth is *not** stored in component state
+
+1. Renders React on the server
+2. Has components with async data dependencies *(e.g. component 'A' depends on some data from an API call before rendering content)*.
+3. Uses some global state container (Redux, Mobx, Flux) - i.e. your application data's source of truth is **not** stored in component state
 
 ## Description
 
@@ -19,7 +20,7 @@ In React, it's very common for components to depend on some data from **async ac
 
 So when a component needs to wait for some data from an *async action*, out of the box `ReactDOM.renderToString` will render the whole app to a html string, firing off any actions you might have in `componentWillMount`, then when the actions complete and modify the state, there's nothing to cause another re-render, so usually you just have to manually fetch any data for each `route` before rendering, or just send incomplete markup back to the client
 
-This library attempts to solve this problem in a fairly simple way. By listing your action dependencies for each component explicitly, and returning `promises` from any async actions, we can watch and wait for those `promises` to resolve (Only promises are supported at the moment).
+This library attempts to solve this problem in a fairly simple way. By listing your action dependencies for each component explicitly, and returning `promises` from any async actions, we can watch and wait for those `promises` to resolve (only promises are supported at the moment).
 
 ### On the client
 
@@ -33,21 +34,23 @@ A components' actions get fired **only once**, although it may take multiple *re
 An async dependency chain is described by the following scenario:
 
 `Component A`
-⋅⋅⋅depends on on API call, then renders `Component B` when data is available
-`Component B`
-⋅⋅⋅depends on a different API call
 
-`Component B` now depends on a *chain* of 2 API calls; first `Component A`'s, then its own.
+- depends on on API call, then renders `Component B` when data is available
+
+`Component B`
+
+- depends on a different API call
+- now depends on a *chain* of 2 API calls; first `Component A`'s, then its own.
 
 This would take **2 passes** to guarantee all promises have been resolved.
 - **1st pass** renders `A` and fires off its actions.
 - **2nd pass** renders `A` and `B`, skipping `A`'s actions (as they have already been fired), and fires off `B`'s actions.
-- **3rd pass** (if maxPasses has not been set) renders `A` and `B` to check no other components with async dependencies have been rendered.
+- **3rd pass** (if `maxPasses` has not been set) renders `A` and `B` to check no other components with async dependencies have been rendered.
 
 
 ## Installing
 
-`npm install react-async-actions`
+`npm install react-async-actions --save`
 
 ## Usage
 
@@ -56,7 +59,6 @@ This would take **2 passes** to guarantee all promises have been resolved.
 ```js
 import { asyncActions } from 'react-async-actions';
 
-// Returns array of sync/async actions
 const actionsToFire = (props) => [
   getUser(props.id)
 ];
@@ -71,15 +73,52 @@ class User extends Component {
 asyncActions(actionsToFire)(User);
 ```
 
+`server.js`
+
+```js
+import { fireActions } from 'react-async-actions';
+// import { Provider } from 'react-redux';
+// import { Provider } from 'mobx-react';
+
+const element = (
+  <Provider {stores}>
+    <App />
+  </Provider>
+);
+
+const options = {
+  maxPasses: 1
+};
+
+fireAsyncActions(element, options)
+  .then(() => {
+    // Promises will be resolved at this point, store will be up to date
+    // Now can do one final render to generate the full markup from the initialised state
+    const markup = renderToString(element);
+
+    sendToClient(markup);
+  })
+```
+
 ### API
 
 #### asyncActions(*mapPropsToActions*)
 
 Component decorator, takes in a function with a `props` parameter.  
-Should return an array of actions, which can be *synchronous* or *asynchronous* (by returning a promise).
+
+**mapPropsToActions(props)** - should return an array of actions, which can be *synchronous* or *asynchronous* (by returning a promise).
+
 
 #### fireAsyncActions(*element* [, *options*])
 
-Options is an object with the following *optional* properties
+**element** - React element to resolve actions for
 
-- maxPasses
+**options** - Options object with the the following *optional* properties
+
+- **maxPasses** - limits the number of render passes. Recommended if you know how many passes it should take to fire all your actions. E.g. if you have no *async dependency **chains*** (described above) but do have async actions, set this to **1**.
+  `default: Inifinity`
+
+
+### License
+
+MIT

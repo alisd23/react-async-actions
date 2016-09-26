@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "A simple way to handle asynchronous dependencies in React components in apps which use a global state container (e.g. Redux/Mobx/Flux), on client and server.",
   "main": "dist/react-async-actions.js",
-  "directories": {
-    "test": "test"
-  },
   "scripts": {
     "lint": "eslint src __test__",
     "test": "jest",
@@ -36,7 +33,7 @@
     "Async",
     "Asynchronous"
   ],
-  "author": "Ali Sheehan-Dare",
+  "author": "Ali Sheehan-Dare - @im_alisd",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/alisd23/react-async-actions/issues"
@@ -52,6 +49,7 @@
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-1": "^6.13.0",
+    "cross-env": "^3.0.0",
     "eslint": "^3.6.0",
     "eslint-config-standard": "^6.0.1",
     "eslint-config-standard-react": "^4.0.2",
@@ -59,9 +57,12 @@
     "eslint-plugin-react": "^6.3.0",
     "eslint-plugin-standard": "^2.0.0",
     "jest": "^15.1.1",
+    "react": "^15.0.0",
     "react-addons-test-utils": "^15.3.2",
+    "react-dom": "^15.0.0",
     "react-test-renderer": "^15.3.2",
-    "webpack": "^1.13.2"
+    "rimraf": "^2.5.4",
+    "webpack": "^2.1.0-beta.25"
   },
   "peerDependencies": {
     "react": "^15.0.0",

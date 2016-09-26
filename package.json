@@ -2,17 +2,24 @@
   "name": "react-async-actions",
   "version": "1.0.0",
   "description": "A simple way to handle asynchronous dependencies in React components in apps which use a global state container (e.g. Redux/Mobx/Flux), on client and server.",
-  "main": "index.js",
+  "main": "dist/react-async-actions.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
+    "lint": "eslint src __test__",
     "test": "jest",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "clean": "rimraf dist -f",
+    "build": "cross-env ENV=production webpack --progress --colors && webpack --progress --colors",
+    "prepublish": "npm run clean && npm run lint && npm run test && npm run build"
   },
   "jest": {
     "collectCoverage": true,
-    "coverageDirectory": "./__test__/coverage"
+    "coverageDirectory": "./__test__/coverage",
+    "testPathDirs": [
+      "__test__"
+    ]
   },
   "repository": {
     "type": "git",
@@ -36,17 +43,28 @@
   },
   "homepage": "https://github.com/alisd23/react-async-actions#readme",
   "devDependencies": {
+    "babel-eslint": "^6.1.2",
     "babel-jest": "^15.0.0",
+    "babel-loader": "^6.2.5",
     "babel-plugin-transform-class-properties": "6.11.5",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
     "babel-polyfill": "^6.13.0",
     "babel-preset-es2015": "^6.14.0",
     "babel-preset-react": "^6.11.1",
     "babel-preset-stage-1": "^6.13.0",
-    "jest": "^15.1.1"
+    "eslint": "^3.6.0",
+    "eslint-config-standard": "^6.0.1",
+    "eslint-config-standard-react": "^4.0.2",
+    "eslint-plugin-promise": "^2.0.1",
+    "eslint-plugin-react": "^6.3.0",
+    "eslint-plugin-standard": "^2.0.0",
+    "jest": "^15.1.1",
+    "react-addons-test-utils": "^15.3.2",
+    "react-test-renderer": "^15.3.2",
+    "webpack": "^1.13.2"
   },
-  "dependencies": {
-    "react": "^15.3.2",
-    "react-dom": "^15.3.2"
+  "peerDependencies": {
+    "react": "^15.0.0",
+    "react-dom": "^15.0.0"
   }
 }

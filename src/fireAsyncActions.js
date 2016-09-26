@@ -1,12 +1,12 @@
 import React from 'react';
 import { renderToStaticMarkup } from 'react-dom/server';
 
-export default (element, options) => {
+export default (element, customOptions) => {
   const deps = [];
   const defaultOptions = {
-    recursive: false
+    maxPasses: Infinity
   };
-  const { recursive } = { ...defaultOptions, ...options };
+  const options = { ...defaultOptions, ...customOptions };
 
   class AsyncProvider extends React.Component {
     static propTypes = {
@@ -16,13 +16,16 @@ export default (element, options) => {
       addDep: React.PropTypes.func
     };
 
-    addDep({ promise, factoryRef }) {
+    addDep({ callActions, factoryRef }) {
       const promisesResolved = deps
         .map(p => p.factoryRef)
         .find(ref => ref === factoryRef);
 
       if (!promisesResolved) {
-        deps.push({ promise, factoryRef });
+        deps.push({
+          promise: callActions(),
+          factoryRef
+        });
       }
     }
 
@@ -41,15 +44,23 @@ export default (element, options) => {
     </AsyncProvider>
   );
 
-  const renderPass = (prevPromisesCount = 0) => {
-    renderToStaticMarkup(elem);
-    const currPromisesCount = deps.length;
-    const promise = Promise.all(deps.map(p => p.promise));
+  const renderPass = (prevPromisesCount = 0, passCount = 0) => {
+    const results = {
+      passes: passCount
+    };
 
-    if (recursive && (currPromisesCount > prevPromisesCount)) {
-      return promise.then(() => renderPass(currPromisesCount));
+    if (passCount >= options.maxPasses) {
+      return Promise.resolve(results);
     } else {
-      return promise;
+      renderToStaticMarkup(elem);
+      const currPromisesCount = deps.length;
+      const promise = Promise.all(deps.map(p => p.promise));
+
+      if (currPromisesCount > prevPromisesCount) {
+        return promise.then(() => renderPass(currPromisesCount, passCount + 1));
+      } else {
+        return promise.then(() => results);
+      }
     }
   };
 

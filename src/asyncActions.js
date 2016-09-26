@@ -19,7 +19,7 @@ export default (stateToActions) => (MyComponent) => {
     componentWillMount() {
       if (this.asyncRender) {
         this.context.addDep({
-          promise: this.fireActions(),
+          callActions: () => this.fireActions(),
           factoryRef: stateToActions
         });
       }

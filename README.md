@@ -12,7 +12,9 @@ This library attempts to be as non-obtrusive as possible, providing a simple hel
   - [On the client](#on-the-client)
   - [On the server](#on-the-server)
 - [Installing](#installing)
-- [Usage](#usage)
+- [Example Usage](#example-usage)
+  - [Redux Example](#redux-example)
+  - [MobX Example](#mobx-example)
 - [API](#api)
 
 ## Should I use this library?
@@ -33,7 +35,7 @@ In React, it's very common for components to depend on some data from **async ac
 
 ## Client-side
 
-*On the client* this can be done fairly easily because of how `React.render` works. The actions simply get fired off when the component `mounts`, state is changed somewhere, and the app can keep re-rendering as state changes. 
+*On the client* this can be done fairly easily because of how `React.render` works. The actions simply get fired off when the component `mounts`, state is changed somewhere, and the app can keep re-rendering as state changes.
 
 
 ## Server-side
@@ -89,36 +91,44 @@ How many passes your app needs to render is completely down to design. It's best
 `npm install react-async-actions --save`
 
 
-## Usage
+## Example Usage
+
+### Redux Example
 
 `UserComponent.js`
 
 ```js
+import { connect } from 'react-redux';
 import { asyncActions } from 'react-async-actions';
 
+const mapStateToProps = (state) => ({
+  id: state.user.id,
+  name: state.user.name
+});
+const mapDispatchToProps = { getUserName };
 const actionsToFire = (props) => [
-  props.getUser(props.id)
+  props.getUserName(props.id)
 ];
 
+@connect(mapStateToProps, mapDispatchToProps)
 @asyncActions(actionsToFire)
+@observer
 class User extends Component {
-  // ...
+  render() {
+    // Need this.props.name here
+  }
 }
-
-// OR
-
-asyncActions(actionsToFire)(User);
 ```
 
 `server.js`
 
 ```js
-import { fireActions } from 'react-async-actions';
-// import { Provider } from 'react-redux';
-// import { Provider } from 'mobx-react';
+import { fireAsyncActions } from 'react-async-actions';
+import { Provider } from 'react-redux';
+import store from './store';
 
 const element = (
-  <Provider {stores}>
+  <Provider store={store}>
     <App />
   </Provider>
 );
@@ -132,9 +142,59 @@ fireAsyncActions(element, options)
     // Promises will be resolved at this point, store will be up to date
     // Now can do one final render to generate the full markup from the initialised state
     const markup = renderToString(element);
+    // ...
+  });
+```
 
-    sendToClient(markup);
-  })
+### MobX Example
+
+`UserComponent.js`
+
+```js
+import { observer, inject } from 'mobx-react';
+import { asyncActions } from 'react-async-actions';
+
+const mapStateToProps = (stores, ownProps) => ({
+  id: stores.user.id,
+  name: stores.user.name,
+  getUserName: stores.user.getUserName
+});
+const actionsToFire = (props) => [
+  props.getUserName(props.id)
+];
+
+@inject(mapStateToProps)
+@asyncActions(actionsToFire)
+@observer
+class User extends Component {
+  // Need this.props.name here
+}
+```
+
+`server.js`
+
+```js
+import { fireAsyncActions } from 'react-async-actions';
+import { Provider } from 'mobx-react';
+import stores from './stores';
+
+const element = (
+  <Provider {...stores}>
+    <App />
+  </Provider>
+);
+
+const options = {
+  maxPasses: 1
+};
+
+fireAsyncActions(element, options)
+  .then(() => {
+    // Promises will be resolved at this point, store will be up to date
+    // Now can do one final render to generate the full markup from the initialised state
+    const markup = renderToString(element);
+    // ...
+  });
 ```
 
 ## API

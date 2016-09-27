@@ -112,7 +112,6 @@ const actionsToFire = (props) => [
 
 @connect(mapStateToProps, mapDispatchToProps)
 @asyncActions(actionsToFire)
-@observer
 class User extends Component {
   render() {
     // Need this.props.name here
